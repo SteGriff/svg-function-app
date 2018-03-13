@@ -1,0 +1,54 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+<title>SvgToPng</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="tachyons.min.css">
+</head>
+<body class="sans-serif">
+	<main class="pa2">
+		<h1>SvgToPng</h1>
+					
+		<h2>Upload SVG</h2>
+		<p>XHR Flavour</p>
+		
+		<div class="mv1">
+			<label>
+				SVG:
+				<textarea class="js-input db mv1"></textarea>
+			</label>
+		</div>
+		
+		<div>
+			<button
+			class="h2 b"
+			onclick="sendSvg()">Upload</button>
+		</div>
+		
+        <img class="js-image" />
+
+	</main>
+	
+	<script>
+        function sendSvg()
+        {
+            var data = document.getElementsByClassName("js-input")[0].value;
+            console.log(data);
+
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    var img = document.getElementsByClassName("js-image")[0];
+                    var url = window.URL || window.webkitURL;
+                    img.src = url.createObjectURL(this.response);
+                }
+            }
+            
+            xhr.open("POST", "http://localhost:7071/api/Convert");
+            xhr.responseType = 'blob';
+            xhr.send(data); 
+        }
+    </script>
+</body>
+</html>

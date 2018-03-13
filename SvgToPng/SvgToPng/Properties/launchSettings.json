@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "SvgToPng": {
+      "commandName": "Project",
+      "commandLineArgs": "host start --cors * --pause-on-error"
+    }
+  }
+}
