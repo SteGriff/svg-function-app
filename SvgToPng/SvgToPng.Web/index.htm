@@ -1,34 +1,54 @@
 ﻿<!DOCTYPE HTML>
-<html ng-app="myApp">
+<html>
 <head>
 <title>SvgToPng</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="tachyons.min.css">
+<link rel="stylesheet" href="https://unpkg.com/tachyons@4.9.1/css/tachyons.min.css" />
 </head>
-<body class="sans-serif" ng-controller="MainController">
+<body class="sans-serif">
 	<main class="pa2">
 		<h1>SvgToPng</h1>
 					
 		<h2>Upload SVG</h2>
-		<p><small><b>Note:</b> ...wassup</small></p>
+		<p>XHR Flavour</p>
 		
 		<div class="mv1">
 			<label>
 				SVG:
-				<input class="h2 db mv1" ng-model="svgContent">
+				<textarea class="js-input db mv1"></textarea>
 			</label>
 		</div>
 		
 		<div>
 			<button
 			class="h2 b"
-			ng-click="sendSvg(svgContent)">Upload</button>
+			onclick="sendSvg()">Upload</button>
 		</div>
 		
+        <img class="js-image" />
+
 	</main>
 	
-	<script src="angular.js"></script>
-	<script src="svgController.js"></script>
+	<script>
+        function sendSvg()
+        {
+            var data = document.getElementsByClassName("js-input")[0].value;
+            console.log(data);
+
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    var img = document.getElementsByClassName("js-image")[0];
+                    var url = window.URL || window.webkitURL;
+                    img.src = url.createObjectURL(this.response);
+                }
+            }
+            
+            xhr.open("POST", "http://localhost:7071/api/Convert");
+            xhr.responseType = 'blob';
+            xhr.send(data); 
+        }
+    </script>
 </body>
 </html>
